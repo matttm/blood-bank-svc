@@ -20,7 +20,13 @@ for var in env_vars:
         sys.exit()
     env_vars[var] = tmp
 
-engine = create_engine(f'mysql://{env_vars['DB_USER']}:{env_vars['DB_PASSWORD']}@{env_vars['DB_HOST']}:{env_vars['DB_PORT']}/{env_vars['DB_NAME']}')
+engine = create_engine(
+    'mysql://{user}:{pword}@{host}:{port}/{name}'.format(
+        user=env_vars['DB_USER'], pword=env_vars['DB_PASSWORD'], host=env_vars['DB_HOST'], port=env_vars['DB_PORT'], name=env_vars['DB_NAME']
+        )
+        )
+
 Session = sessionmaker(bind=engine)
 
 Base = declarative_base()
+Base.metadata.reflect()
