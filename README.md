@@ -1,8 +1,10 @@
-# blood-bank-api
+# blood-bank-svc
+
+Development: Active
 
 ## Description
 
-A web API for a blood bank with auto deploy to a lambda
+A web service that is directly invoked by SQS events. This service is the delegate for all non-safe blood bank requests.
 
 ## Getting Started
 
