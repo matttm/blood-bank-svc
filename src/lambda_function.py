@@ -1,5 +1,5 @@
 from __future__ import print_function
-import event_handler
+import services.event_handler as event_handler
 
 def lambda_handler(event, context):
     for record in event['Records']:
