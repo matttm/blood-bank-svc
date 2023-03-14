@@ -6,17 +6,17 @@ from sqlalchemy.orm import sessionmaker
 import os
 import sys
 
-env_vars = [
+env_vars = {
     'DB_HOST': None,
     'DB_PORT': None,
-    'DB_NAME'; None,
+    'DB_NAME': None,
     'DB_USER': None,
     'DB_PASSWORD': None
-]
+}
 for var in env_vars:
     tmp = os.environ.get(var)
     if tmp is None:
-        print(f'Error: {tmp} is not defined')
+        print(f'Error: {var} is not defined')
         sys.exit()
     env_vars[var] = tmp
 
