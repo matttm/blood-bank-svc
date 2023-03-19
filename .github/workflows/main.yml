@@ -23,7 +23,7 @@ jobs:
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv requirements > requirements.txt
-          pipenv run pip install -r requirements.txt -d ./src
+          pipenv run pip install -r requirements.txt -t ./src
           
       - name: zip
         uses: montudor/action-zip@v0.1.0
