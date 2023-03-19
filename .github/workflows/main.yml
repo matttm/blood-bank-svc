@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
-          pipenv lock -r > requirements.txt
+          pipenv rquirements > requirements.txt
           pipenv run pip download -d ./vendor -r requirements.txt
           
       - name: zip
