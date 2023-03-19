@@ -28,17 +28,19 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
-        run: pipenv install
-        
-      - name: install zappa
-        run: pip install zappa
-
-      - name: Configure AWS profile
         run: |
-          pipenv run aws configure set region us-east-1 --profile matttm
-          pipenv run aws configure set output json --profile matttm
-          pipenv run aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} --profile default
-          pipenv run aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} --profile default
-
-      - name: Zappa deployments
-        run: pipenv run zappa update --all
+          pipenv lock -r > requirements.txt
+          pipenv run pip download -d ./vendor -r requirements.txt
+          
+      - name: zip
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: zip -qq -r ./bundle.zip ./
+      - name: default deploy
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: blood-bank-svc
+          zip_file: bundle.zip
