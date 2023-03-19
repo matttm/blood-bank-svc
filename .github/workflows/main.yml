@@ -27,6 +27,7 @@ jobs:
           
           cd src
           for file in *.whl; do
+            [ -f "$file" ] || break
             pip install "$file" -t ./src
           done
           cd ..
