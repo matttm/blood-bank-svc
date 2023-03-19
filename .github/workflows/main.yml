@@ -24,7 +24,10 @@ jobs:
         run: |
           pipenv requirements > requirements.txt
           pipenv run pip install -r requirements.txt -t ./src
-          pip install src/*.whl -t ./src
+          
+          for file in src/*.whl; do
+            pip install "$file" -t ./src
+          done
           rm -rf src/*.whl
           
       - name: zip
