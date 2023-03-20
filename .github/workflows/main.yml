@@ -23,17 +23,28 @@ jobs:
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv requirements > requirements.txt
-          pipenv run pip install -r requirements.txt -t ./src
+          mkdir -p build/python/lib/python3.9/site-packages
+          pipenv run pip install -r requirements.txt -t build/python/lib/python3.9/site-packages
+      
+      - name: zip lambda layer
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: zip -qq -r ./layer.zip build/python
           
-          cd src
-          for file in *.whl; do
-            [ -f "$file" ] || break
-            pip install "$file" -t ./src
-          done
-          cd ..
-          rm -rf src/*.whl
-          
-      - name: zip
+      - name: AWS Lambda Layer Publish
+        uses: taotao2345/aws-lambda-publishlayer@v1.0.0
+        env:
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        with:
+          layer_name: blood-bank-svc
+          zip_file: layer.zip
+
+      - name: remove layer 
+        run: rm -rf build layer.zip
+        
+      - name: zip lambda
         uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./bundle.zip ./
