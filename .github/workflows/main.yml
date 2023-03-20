@@ -43,7 +43,7 @@ jobs:
       - name: Zip it all up and upload to S3
         env:
           release_bucket: python-lambda-pkg-install
-          release_bucket_uri: https://s3.console.aws.amazon.com/s3/buckets/python-lambda-pkg-install?region=us-east-1&tab=properties
+          release_bucket_uri: s3://python-lambda-pkg-install
           release_id: ${{ format('blood-bank-svc-lambda-layer-{0}-dev.zip', github.head_ref )}}
           release_layer: ${{ format('blood-bank-svc-lambda-layer-{0}-dev', github.head_ref )}}
         run: |
