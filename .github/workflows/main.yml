@@ -11,6 +11,15 @@ jobs:
         with:
           python-version: "3.11.0"
           
+      
+      # For more info: https://github.com/aws-actions/configure-aws-credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
       - name: version
         run: python -v
 
@@ -30,16 +39,20 @@ jobs:
         uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./layer.zip build/python
-          
-      - name: AWS Lambda Layer Publish
-        uses: taotao2345/aws-lambda-publishlayer@v1.0.0
+
+      - name: Zip it all up and upload to S3
         env:
-          AWS_REGION: us-east-1
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        with:
-          layer_name: blood-bank-svc
-          zip_file: layer.zip
+          release_bucket: python-lambda-pkg-install
+          release_bucket_uri: https://s3.console.aws.amazon.com/s3/buckets/python-lambda-pkg-install?region=us-east-1&tab=properties
+          release_id: ${{ format('blood-bank-svc-lambda-layer-{0}-dev.zip', github.head_ref )}}
+          release_layer: ${{ format('blood-bank-svc-lambda-layer-{0}-dev', github.head_ref )}}
+        run: |
+          # zip it up
+          zip --quiet -r $release_id build/python
+          
+          # copy the file to S3 and install it in lambda layers
+          aws s3 cp $release_id $release_bucket_uri
+          aws lambda publish-layer-version --layer-name $release_layer  --content S3Bucket=$release_bucket,S3Key=$release_id --compatible-runtimes python3.9
 
       - name: remove layer 
         run: rm -rf build layer.zip
