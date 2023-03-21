@@ -33,7 +33,7 @@ jobs:
         run: |
           pipenv requirements > requirements.txt
           mkdir -p python
-          pipenv run pip install -r requirements.txt -t ./python
+          pipenv run pip install -r requirements.txt -t python/lib/python3.9/site-packages
 
       - name: Zip it all up and upload to S3
         env:
