@@ -32,13 +32,8 @@ jobs:
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv requirements > requirements.txt
-          mkdir -p build/python/lib/python3.9/site-packages
-          pipenv run pip install -r requirements.txt -t build/python/lib/python3.9/site-packages
-      
-      - name: zip lambda layer
-        uses: montudor/action-zip@v0.1.0
-        with:
-          args: zip -qq -r ./layer.zip build/python
+          mkdir -p python
+          pipenv run pip install -r requirements.txt -t ./python
 
       - name: Zip it all up and upload to S3
         env:
@@ -48,7 +43,7 @@ jobs:
           release_layer: ${{ format('blood-bank-svc-lambda-layer-{0}-dev', github.head_ref )}}
         run: |
           # zip it up
-          zip --quiet -r $release_id build/python
+          zip --quiet -r $release_id python
           
           # copy the file to S3 and install it in lambda layers
           aws s3 cp $release_id $release_bucket_uri
