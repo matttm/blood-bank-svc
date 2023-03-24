@@ -1,5 +1,5 @@
-from .database.base import session
-from .database.models import donor
+from database.base import session
+from database.models import donor
 
 def  event_handler(event):
     event_cd = event.cd
