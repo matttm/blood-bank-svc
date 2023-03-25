@@ -2,10 +2,11 @@ from database.base import session
 from database.models import donor
 
 def  event_handler(event):
-    event_cd = event.cd
+    print(event)
+    event_cd = event.get("cd")
     if event_cd == 'NDA':
-        _donor = event.donor
-        model = donor.Donor(_donor.fname, _donor.lname, _donor.bloodType)
+        _donor = event.get("donor")
+        model = donor.Donor(_donor.get("fname"), _donor.get("lname"), _donor.get("bloodType"))
         session.add(model)
         session.commit()
         print('new donor')
