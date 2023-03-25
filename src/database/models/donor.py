@@ -1,7 +1,7 @@
 
 from sqlalchemy import Column, String, Integer, Date
 
-from base import Base
+from ..base import Base
 
 
 class Donor(Base):

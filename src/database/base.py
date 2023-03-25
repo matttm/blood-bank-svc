@@ -29,6 +29,6 @@ engine = create_engine(
 Session = sessionmaker(bind=engine)
 
 Base = declarative_base()
-Base.metadata.reflect(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 session = Session()
