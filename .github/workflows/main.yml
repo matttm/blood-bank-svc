@@ -53,7 +53,7 @@ jobs:
           aws lambda publish-layer-version --layer-name $release_layer  --content S3Bucket=$release_bucket,S3Key=$release_id --compatible-runtimes python3.9
 
       - name: cleaning
-        run: rm -rf build layer.zip python
+        run: rm -rf build layer.zip python *.zip
         
       - name: zip lambda
         uses: montudor/action-zip@v0.1.0
