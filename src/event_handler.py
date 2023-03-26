@@ -1,9 +1,10 @@
 from .database.base import session
 from .database.models import donor
+import json
 
 def  event_handler(event):
     print(event)
-    body = event['body']
+    body = json.loads(event['body'])
     print(body)
     event_cd = body.get("cd")
     if event_cd == 'NDA':
