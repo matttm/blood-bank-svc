@@ -3,7 +3,8 @@ from .database.models import donor
 import json
 
 def  event_handler(event):
-    print(event)
+    print('event', event)
+    print('body', (event['body']))
     body = json.loads(event['body'])
     print(body)
     event_cd = body.get("cd")
