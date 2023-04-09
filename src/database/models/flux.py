@@ -4,14 +4,14 @@ from sqlalchemy import Column, String, Integer, Date
 from base import Base
 
 
-class Flux(Base):
-    __tablename__ = 'FLUX'
+class Transaction(Base):
+    __tablename__ = 'TRANSACTION'
 
-    flux_id = Column('FLUX_ID', Integer, primary_key=True)
-    flux_type = Column('FLUX_TYPE', String)
+    transaction_id = Column('TRANSACTION_ID', Integer, primary_key=True)
+    transaction_type = Column('TRANSACTION_TYPE', String)
     donor_id = Column('DONOR_ID', Integer)
 
-    def __init__(self, flux_id, flux_type, donor_id):
-        self.flux_id = flux_id
-        self.flux_type = flux_type
+    def __init__(self, transaction_id, transaction_type, donor_id):
+        self.transaction_id = transaction_id
+        self.transaction_type = transaction_type
         self.donor_id = donor_id
