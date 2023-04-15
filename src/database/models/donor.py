@@ -11,9 +11,9 @@ class Donor(Base):
     first_name = Column('FIRST_NAME', String)
     last_name = Column('LAST_NAME', String)
     blood_type = Column('BLOOD_TYPE', String)
-    email = Column('EMAIL', String)
-    created_at = Column('CREATED_AT', Date)
-    updated_at = Column('UPDATED_AT', Date)
+    email = Column('EMAIL', String, nullable=True)
+    created_at = Column('CREATED_AT', Date, nullable=True)
+    updated_at = Column('UPDATED_AT', Date, nullable=True)
 
     def __init__(self, fname, lname, blood_type, email):
         self.first_name = fname
