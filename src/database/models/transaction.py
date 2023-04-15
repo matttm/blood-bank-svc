@@ -11,8 +11,8 @@ class Transaction(Base):
     transaction_type = Column('TRANSACTION_TYPE', String)
     blood_amount_ml = Column('BLOOD_AMOUNT_ML', String)
     donor_id = Column('DONOR_ID', Integer)
-    created_at = Column('CREATED_AT', Date)
-    updated_at = Column('UPDATED_AT', Date)
+    created_at = Column('CREATED_AT', Date, nullable=True)
+    updated_at = Column('UPDATED_AT', Date, nullable=True)
 
     def __init__(self, transaction_id, transaction_type, blood_amount_ml, donor_id):
         self.transaction_id = transaction_id
