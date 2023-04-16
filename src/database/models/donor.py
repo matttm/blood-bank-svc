@@ -15,7 +15,7 @@ class Donor(Base):
     created_at = Column('CREATED_AT', Date, nullable=False, server_default=text('DEFAULT CURRENT_TIMESTAMP'))
     updated_at = Column('UPDATED_AT', Date, nullable=False, server_default=text('DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
-    def __init__(self, fname, lname, blood_type, email):
+    def __init__(self, fname, lname, blood_type, email=None):
         self.first_name = fname
         self.last_name = lname
         self.blood_type = blood_type
