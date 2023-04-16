@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, String, Integer, Date
+from sqlalchemy import Column, String, Integer, Date, text
 
 from base import Base
 
@@ -11,8 +11,8 @@ class Transaction(Base):
     transaction_type = Column('TRANSACTION_TYPE', String)
     blood_amount_ml = Column('BLOOD_AMOUNT_ML', String)
     donor_id = Column('DONOR_ID', Integer)
-    created_at = Column('CREATED_AT', Date, nullable=True)
-    updated_at = Column('UPDATED_AT', Date, nullable=True)
+    created_at = Column('CREATED_AT', Date, nullable=False, server_default=text('DEFAULT CURRENT_TIMESTAMP'))
+    updated_at = Column('UPDATED_AT', Date, nullable=False, server_default=text('DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
     def __init__(self, transaction_id, transaction_type, blood_amount_ml, donor_id):
         self.transaction_id = transaction_id
