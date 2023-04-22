@@ -16,13 +16,13 @@ def  event_handler(event):
         print('new donor')
     elif event_cd == 'EDA':
         _donor = body.get("donor")
-        edit = session.get(donor.Donor, body.get("id"))
+        edit = session.get(donor.Donor, _donor.get("id"))
         edit.firstName = _donor.get("fname")
         edit.lastName = _donor.get("lname")
         edit.bloodType = _donor.get("bloodType")
         session.commit()
     elif event_cd == 'DD':
-        deletion = session.get(donor.Donor, body.get("id"))
+        deletion = session.get(donor.Donor, body.get("donor").get("id"))
         session.delete(deletion)
         session.commit()
     else:
