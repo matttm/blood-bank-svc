@@ -19,9 +19,9 @@ def  event_handler(event):
         session.query(donor.Donor). \
             filter(donor.Donor.donor_id == _donor.get("id")). \
                 update({
-                    "firstName": _donor.get("fname"),
-                    "lastName": _donor.get("lname"),
-                    "bloodType": _donor.get("bloodType")
+                    "first_name": _donor.get("fname"),
+                    "last_name": _donor.get("lname"),
+                    "blood_type": _donor.get("bloodType")
                 })
     elif event_cd == 'DD':
         deletion = session.get(donor.Donor, body.get("donor").get("id"))
