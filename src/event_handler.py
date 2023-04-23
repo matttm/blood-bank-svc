@@ -23,6 +23,7 @@ def  event_handler(event):
                     "last_name": _donor.get("lname"),
                     "blood_type": _donor.get("bloodType")
                 })
+        session.commit()
     elif event_cd == 'DD':
         deletion = session.get(donor.Donor, body.get("donor").get("id"))
         session.delete(deletion)
