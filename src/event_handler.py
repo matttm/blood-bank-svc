@@ -1,5 +1,6 @@
 from .database.base import session
 from .database.models import donor
+from .enums import event_type
 import json
 
 def  event_handler(event):
@@ -8,13 +9,13 @@ def  event_handler(event):
     body = json.loads(event['body'])
     print(body)
     event_cd = body.get("cd")
-    if event_cd == 'NDA':
+    if event_cd == event_type.NEW_DONOR_APPLICANT.code:
         _donor = body.get("donor")
         model = donor.Donor(_donor.get("fname"), _donor.get("lname"), _donor.get("bloodType"))
         session.add(model)
         session.commit()
         print('new donor')
-    elif event_cd == 'EDA':
+    elif event_cd == event_type.EDIT_DONOR_APPLICANT.code:
         _donor = body.get("donor")
         session.query(donor.Donor). \
             filter(donor.Donor.donor_id == _donor.get("id")). \
@@ -24,7 +25,7 @@ def  event_handler(event):
                     "blood_type": _donor.get("bloodType")
                 })
         session.commit()
-    elif event_cd == 'DDA':
+    elif event_cd == event_type.DELETE_DONOR_APPLICANT.code:
         deletion = session.get(donor.Donor, body.get("donor").get("id"))
         session.delete(deletion)
         session.commit()
