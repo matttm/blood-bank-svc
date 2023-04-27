@@ -3,9 +3,8 @@ from botocore.exceptions import ClientError
 from ..services.utility_service import UtilityService
 email_config = {
     'SENDER': None,
-    'RECIPIENT': None,
-    'CONFIGURATION_SET': None,
-    'AWS_REGION': None
+    # 'CONFIGURATION_SET': None,
+    'EMAIL_AWS_REGION': None
 }
 class EmailService:
     def __init__(self) -> None:
@@ -16,20 +15,20 @@ class EmailService:
 
         # Replace recipient@example.com with a "To" address. If your account 
         # is still in the sandbox, this address must be verified.
-        self.RECIPIENT = email_config['RECIPIENT']
+        # self.RECIPIENT = email_config['RECIPIENT']
 
         # Specify a configuration set. If you do not want to use a configuration
         # set, comment the following variable, and the 
         # ConfigurationSetName=CONFIGURATION_SET argument below.
-        self.CONFIGURATION_SET = email_config['CONFIGURATION_SET']
+        # self.CONFIGURATION_SET = email_config['CONFIGURATION_SET']
 
         # If necessary, replace us-west-2 with the AWS Region you're using for Amazon SES.
-        self.AWS_REGION = email_config['AWS_REGION']
+        self.AWS_REGION = email_config['EMAIL_AWS_REGION']
 
         # Create a new SES resource and specify a region.
         self.client = boto3.client('ses',region_name=self.AWS_REGION)
 
-    def send_email(self, subject, body):
+    def send_email(self, recipient, subject, body):
         # The subject line for the email.
         SUBJECT = "Amazon SES Test (SDK for Python)"
 
@@ -61,7 +60,7 @@ class EmailService:
             response = self.client.send_email(
             Destination={
                 'ToAddresses': [
-                    self.RECIPIENT,
+                    recipient,
                 ],
             },
             Message={
