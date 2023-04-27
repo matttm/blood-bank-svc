@@ -1,6 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
-
+from ..services.utility_service import UtilityService
 email_config = {
     'SENDER': None,
     'RECIPIENT': None,
@@ -9,6 +9,7 @@ email_config = {
 }
 class EmailService:
     def __init__(self) -> None:
+        UtilityService.populate_config_from_environment(email_config)
         # Replace sender@example.com with your "From" address.
         # This address must be verified with Amazon SES.
         self.SENDER = email_config['SENDER']
