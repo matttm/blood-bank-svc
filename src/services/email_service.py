@@ -2,6 +2,11 @@ import boto3
 from botocore.exceptions import ClientError
 import os
 
+email_config = {
+    'SENDER': None,
+    'RECIPIENT': None,
+    'CONFIGURATION_SET': None
+}
 class EmailService:
     def __init__(self) -> None:
         # Replace sender@example.com with your "From" address.
