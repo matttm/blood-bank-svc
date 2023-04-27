@@ -1,30 +1,34 @@
 import boto3
 from botocore.exceptions import ClientError
-import os
 
 email_config = {
     'SENDER': None,
     'RECIPIENT': None,
-    'CONFIGURATION_SET': None
+    'CONFIGURATION_SET': None,
+    'AWS_REGION': None
 }
 class EmailService:
     def __init__(self) -> None:
         # Replace sender@example.com with your "From" address.
         # This address must be verified with Amazon SES.
-        SENDER = "Sender Name <sender@example.com>"
+        self.SENDER = email_config['SENDER']
 
         # Replace recipient@example.com with a "To" address. If your account 
         # is still in the sandbox, this address must be verified.
-        RECIPIENT = "recipient@example.com"
+        self.RECIPIENT = email_config['RECIPIENT']
 
         # Specify a configuration set. If you do not want to use a configuration
         # set, comment the following variable, and the 
         # ConfigurationSetName=CONFIGURATION_SET argument below.
-        CONFIGURATION_SET = "ConfigSet"
+        self.CONFIGURATION_SET = email_config['CONFIGURATION_SET']
 
         # If necessary, replace us-west-2 with the AWS Region you're using for Amazon SES.
-        AWS_REGION = "us-west-2"
+        self.AWS_REGION = email_config['AWS_REGION']
 
+        # Create a new SES resource and specify a region.
+        self.client = boto3.client('ses',region_name=self.AWS_REGION)
+
+    def send_email(self, subject, body):
         # The subject line for the email.
         SUBJECT = "Amazon SES Test (SDK for Python)"
 
@@ -50,42 +54,39 @@ class EmailService:
         # The character encoding for the email.
         CHARSET = "UTF-8"
 
-        # Create a new SES resource and specify a region.
-        client = boto3.client('ses',region_name=AWS_REGION)
-
-# Try to send the email.
-try:
-    #Provide the contents of the email.
-    response = client.send_email(
-        Destination={
-            'ToAddresses': [
-                RECIPIENT,
-            ],
-        },
-        Message={
-            'Body': {
-                'Html': {
-                    'Charset': CHARSET,
-                    'Data': BODY_HTML,
+        # Try to send the email.
+        try:
+            #Provide the contents of the email.
+            response = self.client.send_email(
+            Destination={
+                'ToAddresses': [
+                    self.RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': BODY_HTML,
+                    },
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': BODY_TEXT,
+                    },
                 },
-                'Text': {
+                'Subject': {
                     'Charset': CHARSET,
-                    'Data': BODY_TEXT,
+                    'Data': SUBJECT,
                 },
             },
-            'Subject': {
-                'Charset': CHARSET,
-                'Data': SUBJECT,
-            },
-        },
-        Source=SENDER,
-        # If you are not using a configuration set, comment or delete the
-        # following line
-        ConfigurationSetName=CONFIGURATION_SET,
-    )
-# Display an error if something goes wrong.	
-except ClientError as e:
-    print(e.response['Error']['Message'])
-else:
-    print("Email sent! Message ID:"),
-    print(response['MessageId'])
+            Source=self.SENDER,
+            # If you are not using a configuration set, comment or delete the
+            # following line
+            ConfigurationSetName=self.CONFIGURATION_SET,
+            )
+            # Display an error if something goes wrong.	
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+        else:
+            print("Email sent! Message ID:"),
+            print(response['MessageId'])
