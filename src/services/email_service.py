@@ -1,12 +1,20 @@
 import boto3
 from botocore.exceptions import ClientError
 from ..services.utility_service import UtilityService
+from ..services.email_service import EmailService
+
 email_config = {
     'SENDER': None,
     # 'CONFIGURATION_SET': None,
     'EMAIL_AWS_REGION': None
 }
 class EmailService:
+    @staticmethod
+    def getInstance():
+        if not singleton:
+            singleton = EmailService()
+        return singleton
+
     def __init__(self) -> None:
         UtilityService.populate_config_from_environment(email_config)
         # Replace sender@example.com with your "From" address.
