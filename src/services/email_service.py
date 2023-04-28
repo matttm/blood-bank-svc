@@ -9,11 +9,12 @@ email_config = {
     'EMAIL_AWS_REGION': None
 }
 class EmailService:
-    @staticmethod
-    def getInstance():
-        if not singleton:
-            singleton = EmailService()
-        return singleton
+    singleton = None
+
+    def __new__(cls):
+        if cls.singleton is None:
+            cls.singleton = super().__new__(cls)
+        return cls.singleton
 
     def __init__(self) -> None:
         UtilityService.populate_config_from_environment(email_config)
