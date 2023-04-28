@@ -3,8 +3,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import os
-import sys
+from ..services.utility_service import UtilityService
 
 env_vars = {
     'DB_HOST': None,
@@ -13,12 +12,7 @@ env_vars = {
     'DB_USERNAME': None,
     'DB_PASSWORD': None
 }
-for var in env_vars:
-    tmp = os.environ.get(var)
-    if tmp is None:
-        print(f'Error: {var} is not defined')
-        sys.exit()
-    env_vars[var] = tmp
+UtilityService.populate_config_from_environment(env_vars)
 
 engine = create_engine(
     'mysql+pymysql://{user}:{pword}@{host}:{port}/{name}'.format(
