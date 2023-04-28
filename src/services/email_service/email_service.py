@@ -90,7 +90,7 @@ class EmailService:
             Source=self.SENDER,
             # If you are not using a configuration set, comment or delete the
             # following line
-            ConfigurationSetName=self.CONFIGURATION_SET,
+            # ConfigurationSetName=self.CONFIGURATION_SET,
             )
             # Display an error if something goes wrong.	
         except ClientError as e:
