@@ -32,5 +32,5 @@ def  event_handler(event):
         session.commit()
     else:
         print('Unknown code')
-    EmailService.getInstance().send_email('matttmaloney@gmail.com')
+    EmailService.send_email('matttmaloney@gmail.com')
     session.close()
