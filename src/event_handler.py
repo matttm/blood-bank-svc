@@ -1,7 +1,6 @@
 from .database.base import session
 from .database.models import donor
 from .enums import event_type
-from .services.email_service import EmailService
 import json
 
 def  event_handler(event):
@@ -32,5 +31,5 @@ def  event_handler(event):
         session.commit()
     else:
         print('Unknown code')
-    EmailService.send_email('matttmaloney@gmail.com')
+    EmailService.send_email('matttmaloney@gmail.com', None, None)
     session.close()
