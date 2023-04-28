@@ -3,7 +3,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from ..services.utility_service import UtilityService
+from ..services.utility_service.utility_service import UtilityService
 
 env_vars = {
     'DB_HOST': None,

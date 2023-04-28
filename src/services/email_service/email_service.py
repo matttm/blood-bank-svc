@@ -1,7 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
-from ..services.utility_service import UtilityService
-from ..services.email_service import EmailService
+from ..utility_service.utility_service import UtilityService
 
 email_config = {
     'SENDER': None,
