@@ -2,7 +2,6 @@ import boto3
 from botocore.exceptions import ClientError
 from ..utility_service.utility_service import UtilityService
 from importlib.util import spec_from_file_location
-from ... import templates
 
 email_config = {
     'SENDER': None,
@@ -40,7 +39,7 @@ class EmailService:
 
     def send_email(self, recipient, code):
         filename = code + '_template'
-        template = spec_from_file_location(filename, f'../../templates/{filename}.py'
+        template = spec_from_file_location(filename, f'src/templates/{filename}.py'
         ).loader.load_module()
         
         # The subject line for the email.
