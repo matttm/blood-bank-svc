@@ -1,7 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
 from ..utility_service.utility_service import UtilityService
-from importlib import import_module
+from importlib.util import spec_from_file_location
 from ... import templates
 
 email_config = {
@@ -39,8 +39,9 @@ class EmailService:
         self.client = boto3.client('ses',region_name=self.AWS_REGION)
 
     def send_email(self, recipient, code):
-        filename = code + '_template.py'
-        template = templates[code]
+        filename = code + '_template'
+        template = spec_from_file_location(filename, f'../../templates/{filename}.py'
+        ).loader.load_module()
         
         # The subject line for the email.
         SUBJECT = template.SUBJECT

@@ -1,3 +1,3 @@
-import  NDA_template
+from . import  NDA_template
 
 NDA = NDA_template
