@@ -1,7 +1,7 @@
 import boto3
 from botocore.exceptions import ClientError
-from ..services.utility_service import UtilityService
-from ..services.email_service import EmailService
+from ..utility_service.utility_service import UtilityService
+from importlib.util import spec_from_file_location
 
 email_config = {
     'SENDER': None,
@@ -37,28 +37,19 @@ class EmailService:
         # Create a new SES resource and specify a region.
         self.client = boto3.client('ses',region_name=self.AWS_REGION)
 
-    def send_email(self, recipient, subject, body):
+    def send_email(self, recipient, code):
+        filename = code + '_template'
+        template = spec_from_file_location(filename, f'src/templates/{filename}.py'
+        ).loader.load_module()
+        
         # The subject line for the email.
-        SUBJECT = "Amazon SES Test (SDK for Python)"
+        SUBJECT = template.SUBJECT
 
         # The email body for recipients with non-HTML email clients.
-        BODY_TEXT = ("Amazon SES Test (Python)\r\n"
-                    "This email was sent with Amazon SES using the "
-                    "AWS SDK for Python (Boto)."
-                    )
+        BODY_TEXT = template.BODY_TEXT
                     
         # The HTML body of the email.
-        BODY_HTML = """<html>
-        <head></head>
-        <body>
-        <h1>Amazon SES Test (SDK for Python)</h1>
-        <p>This email was sent with
-            <a href='https://aws.amazon.com/ses/'>Amazon SES</a> using the
-            <a href='https://aws.amazon.com/sdk-for-python/'>
-            AWS SDK for Python (Boto)</a>.</p>
-        </body>
-        </html>
-                    """            
+        BODY_HTML = template.BODY_HTML         
 
         # The character encoding for the email.
         CHARSET = "UTF-8"
@@ -91,7 +82,7 @@ class EmailService:
             Source=self.SENDER,
             # If you are not using a configuration set, comment or delete the
             # following line
-            ConfigurationSetName=self.CONFIGURATION_SET,
+            # ConfigurationSetName=self.CONFIGURATION_SET,
             )
             # Display an error if something goes wrong.	
         except ClientError as e:
