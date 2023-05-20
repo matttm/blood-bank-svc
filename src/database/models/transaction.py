@@ -14,8 +14,7 @@ class Transaction(Base):
     created_at = Column('CREATED_AT', Date, nullable=False, server_default=text('DEFAULT CURRENT_TIMESTAMP'))
     updated_at = Column('UPDATED_AT', Date, nullable=False, server_default=text('DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'))
 
-    def __init__(self, transaction_id, transaction_type, blood_amount_ml, donor_id):
-        self.transaction_id = transaction_id
+    def __init__(self, transaction_type, blood_amount_ml, donor_id):
         self.transaction_type = transaction_type
         self.blood_amount_ml = blood_amount_ml
         self.donor_id = donor_id
