@@ -1,18 +1,18 @@
 
 # The subject line for the email.
-SUBJECT = "New Donor Applicant Received"
+SUBJECT = "New Transaction Received"
 
 # The email body for recipients with non-HTML email clients.
-BODY_TEXT = ("Your new donor has been successfully created"
+BODY_TEXT = ("Your transaction has been successfully created"
             )
             
 # The HTML body of the email.
 BODY_HTML = """<html>
 <head></head>
 <body>
-<h1>New Donor Applicant Received</h1>
+<h1>New Transaction Received</h1>
 <p>
-    Your new donor has been successfully created.
+    Your transaction has been successfully created.
 </p>
 </body>
 </html>

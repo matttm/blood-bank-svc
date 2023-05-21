@@ -7,6 +7,7 @@ import json
 def  event_handler(event):
     print('event', event)
     print('body', (event['body']))
+    email = None
     body = json.loads(event['body'])
     print(body)
     event_cd = body.get("cd")
@@ -51,5 +52,6 @@ def  event_handler(event):
         session.commit()
     else:
         print('Unknown code')
-    EmailService().send_email('matttmaloney@gmail.com', None, None)
+    if email != None:
+        EmailService().send_email(email, event_cd)
     session.close()
