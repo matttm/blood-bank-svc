@@ -1,5 +1,5 @@
 from .database.base import session
-from .database.models import donor
+from .database.models import donor, transaction
 from .enums import event_type
 from .services.email_service.email_service import EmailService
 import json
@@ -7,6 +7,7 @@ import json
 def  event_handler(event):
     print('event', event)
     print('body', (event['body']))
+    email = None
     body = json.loads(event['body'])
     print(body)
     event_cd = body.get("cd")
@@ -30,7 +31,27 @@ def  event_handler(event):
         deletion = session.get(donor.Donor, body.get("donor").get("id"))
         session.delete(deletion)
         session.commit()
+    elif event_cd == event_type.NEW_TRANSACTION.code:
+        _transaction = body.get("transaction")
+        model = transaction.Transaction(
+            _transaction.get("transactionType"),
+            _transaction.get("bloodAmountML"),
+            _transaction.get("donorId")
+        )
+        session.add(model)
+        session.commit()
+    elif event_cd == event_type.EDIT_TRANSACTION.code:
+        _transaction = body.get("transaction")
+        session.query(donor.Donor). \
+            filter(transaction.Transaction.transaction_id == _transaction.get("transactionIfd")). \
+                update({
+            _transaction.get("transactionType"),
+            _transaction.get("bloodAmountML"),
+            _transaction.get("donorId")
+                })
+        session.commit()
     else:
         print('Unknown code')
-    EmailService().send_email('matttmaloney@gmail.com', None, None)
+    if email != None:
+        EmailService().send_email(email, event_cd)
     session.close()
