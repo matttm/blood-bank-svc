@@ -1,10 +1,12 @@
 # blood-bank-svc
 
-Development: Active
+Development: Complete
 
 ## Description
 
 A web service that is directly invoked by SQS events. This service is the delegate for all non-safe blood bank requests.
+
+This repo contains one GitHub action. It is for continuous deployment to an AWS lambda.
 
 ## Getting Started
 
