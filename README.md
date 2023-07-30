@@ -10,7 +10,7 @@ This repo contains one GitHub action. It is for continuous deployment to an AWS 
 
 ## Getting Started
 
-## Contributing
+## Contributing --
 
 ## Authors
 - matttm : Matt Maloney : matttmaloney@gmail.com
